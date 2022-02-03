@@ -19,6 +19,7 @@ import checkReadme from './checkReadme'
 import validateMisc from '../../utils/files/validateMisc'
 import collectSubjectMetadata from '../../utils/summary/collectSubjectMetadata'
 import collectPetFields from '../../utils/summary/collectPetFields'
+import { silly } from './silly'
 
 /**
  * Full Test
@@ -61,6 +62,9 @@ const fullTest = (fileList, options, annexed, dir, schema, callback) => {
       delete fileList[key]
     }
   })
+
+  silly(fileList, schema)
+  return
 
   self.issues = self.issues.concat(subSesMismatchTest(fileList))
 
