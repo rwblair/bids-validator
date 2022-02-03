@@ -53,6 +53,7 @@ const rules = [
 }
 */
 
+/* Playing wtih other ways to organize fileList
 const entity_matrix = (fileList) => {
   entities = {}
   fileList.forEach(file => {
@@ -68,14 +69,16 @@ const entity_matrix = (fileList) => {
       }
       let entity_value = file.entities[key]
       if (!entities[key][entity_value]) {
-        entities[key][entity_value] = [file.relativePath]
+        entities[key][entity_value] = [file]
       } else {
-        entities[key][entity_value].push(file.relativePath)
+        entities[key][entity_value].push(file)
       }
     })
   })
-  console.log(entities)
 }
+*/
+
+var master_filesList;
 
 /* testing with just the func regex, embed the match groups from the regex
  * into the file object. We will use these match groups to check against the
@@ -95,34 +98,66 @@ export const silly = (files, schema) => {
       throw 'more than one match...'
     }
   })
-  entity_matrix(fileList)
+  master_filesList = fileList
   let results = rule_conditions.flatMap((rule_condition) => {
     return match_rule_conditions(fileList, rule_condition)
   })
 }
 
+const generate_required_files = (file, requires) => {
+  required_context = {}
+  requires.map(require => {
+    let required_file = file.relativePath
+    let use_as = require.use_as
+    Object.keys(require).map(key => {
+      if (key === 'use_as') {
+        return
+      }
+      required_file = required_file.replace(file.entities[key], require[key])
+    })
+    if (use_as) {
+      required_context[use_as] = required_file
+    }
+  })
+  return required_context
+}
+
+/* for a given level of rule condition, find the files that the condition
+ * applies to and collect the files listed as requirements for it.
+ * if the apply part of the  rule-condition is a leaf then apply the rule listed,
+ * otherwise recurse down into the apply object.
+ */
 const match_rule_conditions = (fileList, rule_condition) => {
   const { conditions, apply, requires } = rule_condition
 
   /* Which files match at least one element from each of the path component
    *   arrays in conditions.
    */
-  let newFileList = fileList.filter((file) => {
+  let newFileList = []
+  fileList.map((file) => {
     if (!file.entities) {
       return false
     }
     let all_match = test_file_conditions(file, conditions)
-    /* if we have a match, lets see if we have the required files */
-    if (all_match && requires) {
-      generate_required_files(file.relativePath, requires)      
+    if (!all_match) {
+      return
     }
-    return all_match
+    let context = {}
+    context = {...file}
+    if (conditions.use_as) {
+      context[conditions.use_as] = file
+    }
+    if (all_match && requires) {
+      context = {...context, ...generate_required_files(file, requires)}
+    }
+    newFileList.push(context)
+    return
   })
 
   let rules_applied = apply.flatMap((rule) => {
     if (typeof(rule) === 'number') {
       console.log("we should apply a rule")
-      return apply_rule(newFileList, rule)
+      return apply_rule(newFileList, rule, requires)
     }
     else if (typeof(rule) === 'object' && 'conditions' in rule) {
       return match_rule_conditions(newFileList, rule)
@@ -132,13 +167,14 @@ const match_rule_conditions = (fileList, rule_condition) => {
   return rules_applied
 }
 
+// compare object with conditions on path components against a specific file.
 const test_file_conditions = (file, conditions) => {
-  Object.keys(conditions).every((key) => {
+  return Object.keys(conditions).every((key) => {
     if (key === 'use_as') {
       return true
     }
     if (typeof(conditions[key]) === 'string') {
-      conditions[key] = [conditions[key]]
+     conditions[key] = [conditions[key]]
     }
     return conditions[key].some(condition => {
       if (file.entities[key] === condition) {
@@ -151,6 +187,8 @@ const test_file_conditions = (file, conditions) => {
 
 const apply_rule = (fileList, rule_number) => {
   fileList.map((file) => {
+    console.log(file)
+    console.log(rules[rule_number])
     // const context = build_context(....
     // apply_rule_to_context(context, ...
   })
