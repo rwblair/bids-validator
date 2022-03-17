@@ -4,7 +4,7 @@ import Issues from '../components/Issues'
 import BrowserWarning from './BrowserWarning'
 import Validate from '../components/Validate'
 import validate from 'bids-validator'
-import validatorPackageJson from 'bids-validator/package.json'
+import validatorPackageJson from '../../../bids-validator/package.json'
 const version = validatorPackageJson.version
 
 // component setup -----------------------------------------------------------
