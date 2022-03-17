@@ -15,11 +15,13 @@ function parse(file, contents) {
     } finally {
       if (err) {
         resolve({
-          issues: [new Issue({
-            code: 27,
-            file: file,
-            reason: err.toString()
-          })],
+          issues: [
+            new Issue({
+              code: 27,
+              file: file,
+              reason: err.toString(),
+            }),
+          ],
         })
       } else {
         resolve({ issues: [], parsed: jsObj })
@@ -29,5 +31,5 @@ function parse(file, contents) {
 }
 
 export default {
-  parse
+  parse,
 }
