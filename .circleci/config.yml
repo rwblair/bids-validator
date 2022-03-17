@@ -94,7 +94,7 @@ jobs:
           command: npm install
       - run:
           name: Build and export web-validator
-          command: npm run web-export && rsync -av ./bids-validator-web/out/ ~/web_version
+          command: npm run web-export && rsync -av ./bids-validator-web/dist/ ~/web_version
       - save_cache:
           key: npm-deps-{{ checksum "package.json" }}-{{ checksum "./bids-validator/package.json" }}-{{ checksum "./bids-validator-web/package.json" }}-v1
           paths:
