@@ -1,6 +1,9 @@
 FROM node:14-alpine
 
 COPY . /src
+RUN apk update
+RUN apk add git
+RUN git config --global url."https://".insteadOf git://
 
 RUN npm install -g npm
 WORKDIR /src
