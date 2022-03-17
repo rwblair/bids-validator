@@ -188,10 +188,10 @@ jobs:
           command: npm run web-export
       - run:
           name: Clean and remove bids-validator files
-          command: git reset . && git clean --force -d --exclude bids-validator-web/out
+          command: git reset . && git clean --force -d --exclude bids-validator-web/dist
       - run:
           name: Move build into root directory
-          command: mv bids-validator-web/out/* .
+          command: mv bids-validator-web/dist/* .
       - run:
           name: Remove files not related to build
           command: rm -r bids-validator bids-validator-web node_modules
