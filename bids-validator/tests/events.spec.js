@@ -8,7 +8,7 @@ describe('Events', function() {
         path: '/sub01/sub01_task-test_bold.nii.gz',
         relativePath: '/sub01/sub01_task-test_bold.nii.gz',
       },
-      { dim: [4, 0, 0, 0, 10] },
+      { dims: [4, 0, 0, 0, 10] },
     ],
   ]
 

@@ -361,7 +361,7 @@ export default function NIFTI(
           ) {
             let LabelingDuration = mergedDictionary['LabelingDuration']
             const LabelingDurationLength = LabelingDuration.length
-            const kDim = header.dim[4]
+            const kDim = header.dims[4]
             if (LabelingDurationLength !== kDim) {
               issues.push(
                 new Issue({
@@ -432,7 +432,7 @@ export default function NIFTI(
       ) {
         let PostLabelingDelay = mergedDictionary['PostLabelingDelay']
         const PostLabelingDelayLength = PostLabelingDelay.length
-        const kDim = header.dim[4]
+        const kDim = header.dims[4]
         if (PostLabelingDelayLength !== kDim) {
           issues.push(
             new Issue({
@@ -676,7 +676,7 @@ export default function NIFTI(
       if (header && mergedDictionary['FlipAngle'].constructor === Array) {
         let FlipAngle = mergedDictionary['FlipAngle']
         const FlipAngleLength = FlipAngle.length
-        const kDim = header.dim[4]
+        const kDim = header.dims[4]
         if (FlipAngleLength !== kDim) {
           issues.push(
             new Issue({
@@ -733,7 +733,7 @@ export default function NIFTI(
     ) {
       const RepetitionTimePreparationArray =
         mergedDictionary['RepetitionTimePreparation']
-      const kDim = header.dim[4]
+      const kDim = header.dims[4]
       if (RepetitionTimePreparationArray.length !== kDim) {
         issues.push(
           new Issue({
@@ -806,7 +806,7 @@ export default function NIFTI(
             .replace(/^\s+|\s+$/g, '')
             .split(' ').length, // bvec row 3 length
           bval.replace(/^\s+|\s+$/g, '').split(' ').length, // bval row length
-          header.dim[4], // header 4th dimension
+          header.dims[4], // header 4th dimension
         ]
 
         if (
@@ -840,7 +840,7 @@ export default function NIFTI(
   let repetitionTime, repetitionUnit
   if (header) {
     // Define repetition time from header and coerce to seconds.
-    repetitionTime = header.pixdim[4]
+    repetitionTime = header.pixDims[4]
     repetitionUnit =
       header.xyzt_units && header.xyzt_units[3] ? header.xyzt_units[3] : null
     if (repetitionUnit === 'ms') {
@@ -909,7 +909,7 @@ export default function NIFTI(
           mergedDictionary['EchoTime'].constructor === Array
         ) {
           const EchoTimeArray = mergedDictionary['EchoTime']
-          const kDim = header.dim[3]
+          const kDim = header.dims[3]
           if (EchoTimeArray.length !== kDim) {
             issues.push(
               new Issue({
@@ -1010,7 +1010,7 @@ export default function NIFTI(
         mergedDictionary['SliceTiming'].constructor === Array
       ) {
         const sliceTimingArray = mergedDictionary['SliceTiming']
-        const kDim = header.dim[3]
+        const kDim = header.dims[3]
         if (sliceTimingArray.length !== kDim) {
           issues.push(
             new Issue({
@@ -1052,7 +1052,7 @@ export default function NIFTI(
         var axes = { i: 1, j: 2, k: 3 }
         if (
           mergedDictionary.EffectiveEchoSpacing *
-            header.dim[axes[mergedDictionary.PhaseEncodingDirection[0]]] >
+            header.dims[axes[mergedDictionary.PhaseEncodingDirection[0]]] >
           mergedDictionary.RepetitionTime
         ) {
           issues.push(

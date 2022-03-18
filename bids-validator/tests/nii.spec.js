@@ -38,8 +38,8 @@ describe('NIFTI', function() {
 
   it('should ignore missing events files for rest scans', function() {
     let header = {
-      dim: [4, 128, 128, 72, 71],
-      pixdim: [-1, 2, 2, 2, 1],
+      dims: [4, 128, 128, 72, 71],
+      pixDims: [-1, 2, 2, 2, 1],
       xyzt_units: ['mm', 'mm', 'mm', 's'],
     }
     jsonContentsDict[
@@ -64,8 +64,8 @@ describe('NIFTI', function() {
       relativePath: '/sub-09/ses-test/dwi/sub-09_ses-test_dwi.nii.gz',
     }
     var header = {
-      dim: [4, 128, 128, 72, 71],
-      pixdim: [-1, 2, 2, 2, 16.5],
+      dims: [4, 128, 128, 72, 71],
+      pixDims: [-1, 2, 2, 2, 16.5],
       xyzt_units: ['mm', 'mm', 'mm', 's'],
     }
     jsonContentsDict['/sub-09/ses-test/dwi/sub-09_ses-test_dwi.json'] =
@@ -170,8 +170,8 @@ describe('NIFTI', function() {
 
   it('should generate warning if files listed in IntendedFor of fieldmap json do not exist', function() {
     let header = {
-      dim: [4, 128, 128, 1, 71],
-      pixdim: [-1, 2, 2, 2, 16.5],
+      dims: [4, 128, 128, 1, 71],
+      pixDims: [-1, 2, 2, 2, 16.5],
       xyzt_units: ['mm', 'mm', 'mm', 's'],
     }
 
@@ -246,8 +246,8 @@ describe('NIFTI', function() {
 
   it('SliceTiming should not be greater than RepetitionTime', function() {
     let header = {
-      dim: [4, 128, 128, 7, 71],
-      pixdim: [-1, 2, 2, 2, 16.5],
+      dims: [4, 128, 128, 7, 71],
+      pixDims: [-1, 2, 2, 2, 16.5],
       xyzt_units: ['mm', 'mm', 'mm', 's'],
     }
     var jsonContentsDict_new = {
@@ -301,8 +301,8 @@ describe('NIFTI', function() {
         '/sub-15/func/sub-15_task-mixedeventrelatedprobe_run-01_bold.nii.gz',
     }
     var header = {
-      dim: [4, 128, 128, 7, 71],
-      pixdim: [-1, 2, 2, 2, 16.5],
+      dims: [4, 128, 128, 7, 71],
+      pixDims: [-1, 2, 2, 2, 16.5],
       xyzt_units: ['mm', 'mm', 'mm', 's'],
     }
     var events = [
@@ -341,8 +341,8 @@ describe('NIFTI', function() {
         '/sub-15/func/sub-15_task-mixedeventrelatedprobe_run-01_bold.nii.gz',
     }
     var header = {
-      dim: [4, 128, 128, 5, 71],
-      pixdim: [-1, 2, 2, 2, 16.5],
+      dims: [4, 128, 128, 5, 71],
+      pixDims: [-1, 2, 2, 2, 16.5],
       xyzt_units: ['mm', 'mm', 'mm', 's'],
     }
     var events = [
@@ -423,8 +423,8 @@ describe('NIFTI', function() {
   })
   it('should give error if VolumeTiming missing acquisition time', function() {
     let header = {
-      dim: [4, 128, 128, 72, 71],
-      pixdim: [-1, 2, 2, 2, 16.5],
+      dims: [4, 128, 128, 72, 71],
+      pixDims: [-1, 2, 2, 2, 16.5],
       xyzt_units: ['mm', 'mm', 'mm', 's'],
     }
     let volumeJson = {

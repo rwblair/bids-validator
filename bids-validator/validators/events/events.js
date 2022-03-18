@@ -60,7 +60,7 @@ const checkDesignLength = function(events, headers, jsonContents) {
     // number of volumes that were obtained during scan (numVols)
     const file = taskHeader[0]
     const header = taskHeader[1]
-    const dim = header.dim
+    const dim = header.dims
     const numVols = dim[4]
 
     // get the json sidecar dictionary associated with that nifti scan

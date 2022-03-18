@@ -16,7 +16,7 @@ import isNode from '../utils/isNode'
 const headerFields = headers => {
   var finalIssues = []
   var allIssues39Dict = {}
-  var fields = ['dim', 'pixdim']
+  var fields = ['dims', 'pixDims']
 
   /* turn a list of dicts into a dict of lists */
   for (var i = 0; i < fields.length; i++) {
@@ -76,7 +76,7 @@ const headerField = (headers, field) => {
     var path = file.relativePath
     var subject
 
-    if (field === 'dim') {
+    if (field === 'dims') {
       if (
         typeof header[field] === 'undefined' ||
         header[field] === null ||
@@ -91,7 +91,7 @@ const headerField = (headers, field) => {
         continue
       } else if (
         file.name.indexOf('_bold') > -1 &&
-        (header[field][0] !== 4 || header[field].length !== 5)
+        (header[field][0] !== 4 || header[field].length < 5)
       ) {
         issues.push(
           new Issue({
@@ -104,7 +104,7 @@ const headerField = (headers, field) => {
       } else if (
         (file.name.indexOf('magnitude1') > -1 ||
           file.name.indexOf('magnitude2') > -1) &&
-        header[field].length !== 4
+        (header[field][0] !== 3 || header[field].length < 4)
       ) {
         issues.push(
           new Issue({
@@ -114,7 +114,10 @@ const headerField = (headers, field) => {
           }),
         )
         continue
-      } else if (file.name.indexOf('T1w') > -1 && header[field].length !== 4) {
+      } else if (
+        file.name.indexOf('T1w') > -1 &&
+        (header[field][0] !== 3 || header[field].length < 4)
+      ) {
         issues.push(
           new Issue({
             file: file,
@@ -124,7 +127,7 @@ const headerField = (headers, field) => {
         )
       }
       field_value = header[field].slice(1, header[field][0] + 1).toString()
-    } else if (field === 'pixdim') {
+    } else if (field === 'pixDims') {
       if (
         typeof header['xyzt_units'] === 'undefined' ||
         header['xyzt_units'] === null ||
@@ -139,9 +142,9 @@ const headerField = (headers, field) => {
         badField = true
       }
       if (
-        typeof header['pixdim'] === 'undefined' ||
-        header['pixdim'] === null ||
-        header['pixdim'].length < 4
+        typeof header['pixDims'] === 'undefined' ||
+        header['pixDims'] === null ||
+        header['pixDims'].length < 4
       ) {
         issues.push(
           new Issue({
@@ -243,7 +246,7 @@ const headerField = (headers, field) => {
               ' (voxels), This file has the dimensions: ' +
               field_value_key +
               ' (voxels).'
-          } else if (field === 'pixdim') {
+          } else if (field === 'pixDims') {
             evidence =
               'The most common resolution is: ' +
               max_field_value.replace(/,/g, ' x ') +
