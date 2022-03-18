@@ -116,17 +116,19 @@ function parseNIfTIHeader(buffer, file) {
   var header
   try {
     if (nifti.isCompressed(buffer.buffer)) {
-        buffer = nifti.decompress(buffer.buffer);
+      buffer = nifti.decompress(buffer.buffer)
     }
     if (nifti.isNIFTI(buffer.buffer)) {
-        header = nifti.readHeader(buffer.buffer);
-        header.xyzt_units = decodeNIfTIUnits(header.xyzt_units) 
+      header = nifti.readHeader(buffer.buffer)
+      header.xyzt_units = decodeNIfTIUnits(header.xyzt_units)
     } else {
       return { error: new Issue({ code: 26, file: file }) }
     }
   } catch (err) {
     // file is unreadable
-    return { error: new Issue({ code: 26, file: file, reason: err.toString() }) }
+    return {
+      error: new Issue({ code: 26, file: file, reason: err.toString() }),
+    }
   }
   return header
 }
@@ -154,50 +156,50 @@ function handleGunzipError(buffer, file) {
 // forward than instance method from nifit-reader-js
 function decodeNIfTIUnits(units) {
   var space, time
-  switch(units & 7) {
-  case 0:
-    space = ""
-    break
-  case 1:
-    space = "m"
-    break
-  case 2:
-    space = "mm"
-    break
-  case 3:
-    space = "um"
-    break
-  default:
-    console.warn("Unrecognized NIfTI unit: " + (units&7))
-    space = ""
+  switch (units & 7) {
+    case 0:
+      space = ''
+      break
+    case 1:
+      space = 'm'
+      break
+    case 2:
+      space = 'mm'
+      break
+    case 3:
+      space = 'um'
+      break
+    default:
+      console.warn('Unrecognized NIfTI unit: ' + (units & 7))
+      space = ''
   }
-  switch(units & 56) {
-  case 0:
-    time = ""
-    break
-  case 8:
-    time = "s"
-    break
-  case 16:
-    time = "ms"
-    break
-  case 24:
-    time = "us"
-    break
-  case 32:
-    time = "Hz"
-    break
-  case 40:
-    time = "ppm"
-    break
-  case 48:
-    time = "rad/s"
-    break
-  default:
-    console.warn("Unrecognized NIfTI unit: " + (units&56))
-    time = ""
+  switch (units & 56) {
+    case 0:
+      time = ''
+      break
+    case 8:
+      time = 's'
+      break
+    case 16:
+      time = 'ms'
+      break
+    case 24:
+      time = 'us'
+      break
+    case 32:
+      time = 'Hz'
+      break
+    case 40:
+      time = 'ppm'
+      break
+    case 48:
+      time = 'rad/s'
+      break
+    default:
+      console.warn('Unrecognized NIfTI unit: ' + (units & 56))
+      time = ''
   }
-  return (space === "" && time === "") ? undefined : [space, space, space, time]
+  return space === '' && time === '' ? undefined : [space, space, space, time]
 }
 
 export default readNiftiHeader
