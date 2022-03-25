@@ -5,7 +5,7 @@
   "main": "./dist/commonjs/index.js",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
+      "import": "./index.js",
       "require": "./dist/commonjs/index.js"
     },
     "./cli": {
