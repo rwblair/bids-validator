@@ -5,7 +5,7 @@
   "main": "./dist/commonjs/index.js",
   "exports": {
     ".": {
-      "import": "./index.js",
+      "import": "./dist/esm/index.js",
       "require": "./dist/commonjs/index.js"
     },
     "./cli": {
@@ -17,6 +17,7 @@
   },
   "scripts": {
     "build": "node ./esbuild.mjs",
+    "dev": "node ./esbuild.mjs dev",
     "prepublishOnly": "npm run build"
   },
   "repository": {
