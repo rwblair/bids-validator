@@ -17,7 +17,7 @@ await esbuild.build({
 })
 
 // Browser target build
-await esbuild.build({
+const browserConfig = {
   entryPoints: [path.join(process.cwd(), 'index.js')],
   outdir: path.join(process.cwd(), 'dist', 'esm'),
   bundle: true,
@@ -47,4 +47,16 @@ await esbuild.build({
       process: 'globalThis',
     }),
   ],
-})
+}
+
+
+if (process.argv[2] === 'dev') {
+  browserConfig.watch = {
+    onRebuild(error, result) {
+      if (error) console.error('watch build failed:', error)
+      else console.log('watch build succeeded:', result)
+    },
+  }
+}
+
+await esbuild.build(browserConfig)
