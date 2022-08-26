@@ -28,6 +28,7 @@ export class BIDSContext implements Context {
   columns: Record<string, string[]>
   associations: ContextAssociations
   nifti_header: ContextNiftiHeader
+  rules_applied: string[]
 
   constructor(fileTree: FileTree, file: BIDSFile, issues: DatasetIssues) {
     this.#fileTree = fileTree
@@ -45,6 +46,7 @@ export class BIDSContext implements Context {
     this.columns = {}
     this.associations = {} as ContextAssociations
     this.nifti_header = {} as ContextNiftiHeader
+    this.rules_applied = []
   }
 
   get json(): Promise<Record<string, any>> {

@@ -19,6 +19,7 @@ export function applyRules(schema: GenericSchema, context: BIDSContext) {
       continue
     }
     if ('selectors' in schema[key]) {
+      context.rules_applied.push(key)
       evalRule(schema[key] as GenericRule, context)
     } else if (schema[key].constructor === Object) {
       applyRules(schema[key] as GenericSchema, context)
@@ -67,18 +68,19 @@ const evalMap: Record<
  */
 function evalRule(rule: GenericRule, context: BIDSContext) {
   if (!mapEvalCheck(rule.selectors, context)) {
+    context.rules_applied.pop()
     return
   }
   Object.keys(rule)
-    .filter((key) => key in evalMap)
-    .map((key) => {
+    .filter(key => key in evalMap)
+    .map(key => {
       // @ts-expect-error
       evalMap[key](rule, context)
     })
 }
 
 function mapEvalCheck(statements: string[], context: BIDSContext): boolean {
-  return statements.every((x) => evalCheck(x, context))
+  return statements.every(x => evalCheck(x, context))
 }
 
 /**
@@ -127,7 +129,7 @@ function evalInitialColumns(rule: GenericRule, context: BIDSContext): void {
   if (!rule?.columns || !rule?.initial_columns) return
   const headers = Object.keys(context.columns)
   rule.initial_columns.map((ruleHeader: string, ruleIndex: number) => {
-    const contextIndex = headers.findIndex((x) => x === ruleHeader)
+    const contextIndex = headers.findIndex(x => x === ruleHeader)
     if (contextIndex === -1) {
       const evidence = `Column with header ${ruleHeader} not found, indexed from 0 it should appear in column ${contextIndex}`
       context.issues.addNonSchemaIssue('TSV_COLUMN_MISSING', [
@@ -147,7 +149,7 @@ function evalAdditionalColumns(rule: GenericRule, context: BIDSContext): void {
   // hard coding allowed here feels bad
   if (!(rule.additional_columns === 'allowed')) {
     const extraCols = headers.filter(
-      (header) => rule.columns && !(header in rule.columns),
+      header => rule.columns && !(header in rule.columns),
     )
     if (extraCols.length) {
       context.issues.addNonSchemaIssue('TSV_ADDITIONAL_COLUMNS_NOT_ALLOWED', [
