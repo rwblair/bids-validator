@@ -45,6 +45,8 @@ export async function validate(fileTree: FileTree): Promise<ValidationResult> {
       // TODO - Resolve this double casting?
       await check(schema as unknown as GenericSchema, context)
     }
+    console.log(context.file.path)
+    console.log(context.rules_applied)
     await summary.update(context)
   }
   return {
