@@ -40,7 +40,7 @@ const fullTest = (fileList, options, annexed, dir, schema, callback) => {
   }
   const jsonFiles = []
   const headers = []
-  const participants = {}
+  const participants = {list: [], file: null}
   const phenotypeParticipants = []
 
   const tsvs = []
