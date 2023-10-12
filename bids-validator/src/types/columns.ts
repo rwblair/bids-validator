@@ -15,6 +15,9 @@ export const columnMapAccessorProxy = {
     prop: symbol | string,
     receiver: ColumnsMap,
   ) {
+    if (prop === 'size') {
+      return target.get('size')
+    }
     const value = Reflect.get(target, prop, receiver)
     if (typeof value === 'function') return value.bind(target)
     if (prop === Symbol.iterator) return target[Symbol.iterator].bind(target)
