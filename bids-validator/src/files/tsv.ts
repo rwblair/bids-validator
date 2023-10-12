@@ -3,7 +3,6 @@
  * Module for parsing TSV
  */
 import { ColumnsMap } from '../types/columns.ts'
-import { logger } from '../utils/logger.ts'
 
 const normalizeEOL = (str: string): string =>
   str.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
@@ -23,7 +22,6 @@ export function parseTSV(contents: string) {
   })
   for (let i = 1; i < rows.length; i++) {
     for (let j = 0; j < headers.length; j++) {
-      logger.debug(headers[j])
       const col = columns[headers[j]] as string[]
       col.push(rows[i][j])
     }
