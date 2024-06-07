@@ -51,12 +51,8 @@ export async function validate(
     summary.dataProcessed = description.DatasetType === "derivative";
     dsContext = new BIDSContextDataset(options, description);
   } else {
-<<<<<<< HEAD
     dsContext = new BIDSContextDataset(options);
-=======
-    dsContext = new BIDSContextDataset(options)
-    issues.addNonSchemaIssue('MISSING_DATASET_DESCRIPTION', [] as IssueFile[])
->>>>>>> 5b7a3648d8cdb825660b1f3e5d9d847862e30402
+    issues.addNonSchemaIssue('MISSING_DATASET_DESCRIPTION', [] as IssueFile[]);
   }
 
   let derivatives: FileTree[] = [];
