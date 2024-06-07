@@ -1,19 +1,20 @@
-import { CheckFunction } from "../types/check.ts";
-import { FileTree } from "../types/filetree.ts";
-import { GenericSchema } from "../types/schema.ts";
-import { ValidationResult } from "../types/validation-result.ts";
-import { applyRules } from "../schema/applyRules.ts";
-import { walkFileTree } from "../schema/walk.ts";
-import { loadSchema } from "../setup/loadSchema.ts";
-import { ValidatorOptions } from "../setup/options.ts";
-import { Summary } from "../summary/summary.ts";
-import { filenameIdentify } from "./filenameIdentify.ts";
-import { filenameValidate } from "./filenameValidate.ts";
-import { DatasetIssues } from "../issues/datasetIssues.ts";
-import { emptyFile } from "./internal/emptyFile.ts";
-import { BIDSContext, BIDSContextDataset } from "../schema/context.ts";
-import { BIDSFile } from "../types/file.ts";
-import { parseOptions } from "../setup/options.ts";
+import { CheckFunction } from '../types/check.ts'
+import { FileTree } from '../types/filetree.ts'
+import { IssueFile } from '../types/issues.ts'
+import { GenericSchema } from '../types/schema.ts'
+import { ValidationResult } from '../types/validation-result.ts'
+import { applyRules } from '../schema/applyRules.ts'
+import { walkFileTree } from '../schema/walk.ts'
+import { loadSchema } from '../setup/loadSchema.ts'
+import { ValidatorOptions } from '../setup/options.ts'
+import { Summary } from '../summary/summary.ts'
+import { filenameIdentify } from './filenameIdentify.ts'
+import { filenameValidate } from './filenameValidate.ts'
+import { DatasetIssues } from '../issues/datasetIssues.ts'
+import { emptyFile } from './internal/emptyFile.ts'
+import { BIDSContext, BIDSContextDataset } from '../schema/context.ts'
+import { BIDSFile } from '../types/file.ts'
+import { parseOptions } from '../setup/options.ts'
 
 /**
  * Ordering of checks to apply
@@ -50,7 +51,12 @@ export async function validate(
     summary.dataProcessed = description.DatasetType === "derivative";
     dsContext = new BIDSContextDataset(options, description);
   } else {
+<<<<<<< HEAD
     dsContext = new BIDSContextDataset(options);
+=======
+    dsContext = new BIDSContextDataset(options)
+    issues.addNonSchemaIssue('MISSING_DATASET_DESCRIPTION', [] as IssueFile[])
+>>>>>>> 5b7a3648d8cdb825660b1f3e5d9d847862e30402
   }
 
   let derivatives: FileTree[] = [];
