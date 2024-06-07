@@ -196,12 +196,12 @@ function sidecarDefinedTypeCheck(
   if (
     "Levels" in rule && rule["Levels"] && typeof (rule["Levels"]) == "object"
   ) {
-    return value in rule["Levels"];
+    return value == 'n/a' || value in rule["Levels"];
+  } else if ("Units" in rule) {
+    return schemaObjectTypeCheck({ "type": "number" }, value, schema);
+  } else {
+    return true;
   }
-  if ("Units" in rule) {
-    schemaObjectTypeCheck({ "type": "number" }, value, schema);
-  }
-  return true;
 }
 
 /**
