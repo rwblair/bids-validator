@@ -3,7 +3,8 @@
  * Module for extracting Tiff metadata
  */
 import { Ome, Tiff } from '@bids/schema/context'
-import { parseStringPromise } from '@xml2js'
+// @ts-expect-error
+import { parseStringPromise } from '../deps/xml2js-0-6-2.js'
 import { BIDSFile } from '../types/filetree.ts'
 
 function getImageDescription(
@@ -57,6 +58,7 @@ export async function parseTIFF(
   }
 
   const imageDescription = getImageDescription(dataview, littleEndian, version === 42 ? 12 : 20)
+  // @ts-expect-error
   const omexml = await parseStringPromise(imageDescription || '') as { [key: string]: any }
   const Pixels = omexml?.OME?.Image[0]?.Pixels[0]["$"]
   if (!Pixels) return { tiff: { version } }
