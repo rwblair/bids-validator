@@ -119,20 +119,32 @@ export class HTTPOpener implements FileOpener {
 
   async _fetch(headers = {}): Promise<Response> {
     const result = await retry(async () => {
-      const response = await fetch(this.url, { headers, signal: AbortSignal.timeout(5000) })
-      if (!response.ok || !response.body) {
-        logger.error(`Failed to fetch ${this.url}: ${response.status} ${response.statusText}`)
-        throw new HttpError(response.status, response.statusText)
+      const abortController = new AbortController()
+      const timeoutId = setTimeout(() => abortController.abort(), 5000)
+
+      try {
+        const response = await fetch(this.url, { headers, signal: abortController.signal })
+        clearTimeout(timeoutId)
+
+        if (!response.ok || !response.body) {
+          // Cancel the response body to free resources
+          await response.body?.cancel()
+          logger.error(`Failed to fetch ${this.url}: ${response.status} ${response.statusText}`)
+          throw new HttpError(response.status, response.statusText)
+        }
+        logger.info(`Retrieved ${this.url}: ${response.status} ${response.statusText}`)
+        return response
+      } catch (error) {
+        clearTimeout(timeoutId)
+        throw error
       }
-      logger.info(`Retrieved ${this.url}: ${response.status} ${response.statusText}`)
-      return response
     }, {
       isRetriable: (error) => {
         logger.error(`Error during fetch retry check for ${this.url}: ${error}`)
         return (
           error instanceof TypeError ||
           error instanceof HttpError && (error.status == 429 || error.status >= 500) ||
-          error instanceof DOMException && error.name === 'TimeoutError'
+          error instanceof DOMException && error.name === 'AbortError'
         )
       },
     })
