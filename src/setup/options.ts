@@ -57,7 +57,7 @@ export type ValidatorOptions = {
   datasetTypes: string[]
   /** Modalities to refuse; validation fails if any of these are detected. */
   blacklistModalities: string[]
-  /** When `true`, remove files matched by `.bidsignore` from the tree before validation. */
+  /** When `true`, prevents derivatives and sourcedata directories from being added to fileTree. */
   prune?: boolean
   /** Row cap for TSV validation; `0` validates headers only; unset or `-1` validates all rows. */
   maxRows?: number
